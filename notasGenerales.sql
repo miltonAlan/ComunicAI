@@ -32,6 +32,7 @@ Ejecucion proyecto
         - npx expo prebuild -p android
         - npx expo run:android
 
+------------------------------------------------------------------------------------
 creacion apk con EAS
 https://www.youtube.com/watch?v=FBv4PrW5wqY&t=665s&ab_channel=CodewithBetoenEspa%C3%B1ol
 - npm install -g eas-cli
