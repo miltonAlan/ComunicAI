@@ -42,6 +42,10 @@ https://www.youtube.com/watch?v=FBv4PrW5wqY&t=665s&ab_channel=CodewithBetoenEspa
 -BACKEND
 ------------------------------------------------------------------------------------
 npm i -g @nestjs/cli
+
 yarn add openai
 yarn add dotenv
 yarn add cors
+
+iniciar server
+    - yarn start dev
