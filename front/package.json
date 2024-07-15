@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@react-native-voice/voice": "^3.2.4",
+    "@react-navigation/native": "^6.1.17",
     "expo": "~51.0.20",
     "expo-status-bar": "~1.12.1",
     "react": "18.2.0",

@@ -1,4 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
+/*import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from "react";
 import {Image, Pressable, StyleSheet, Text, View, Button } from "react-native";
 import * as FileSystem from "expo-file-system";
@@ -103,3 +103,21 @@ const styles = StyleSheet.create({
     marginBottom: 1,
   },
 });
+*/
+
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+// Importa tus pantallas
+import Untitled from './src/screens/Untitled';
+
+
+export default function App() {
+  
+  return (
+    
+      <NavigationContainer>
+        <Untitled/>
+      </NavigationContainer>
+    
+  );
+}
