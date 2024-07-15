@@ -11,7 +11,7 @@ export default function App() {
   const [borderColor, setBorderColor] = useState<"lightgray" | "lightgreen">(
     "lightgray"
   );
-  const handleSpeakResults = () => {
+  const handleSpeakResults = () => { 
     // Unir los resultados en una sola cadena--- prueba de guardar en rama
     const textToSpeak = state.results[0];
     // Verificar si hay resultados para evitar errores
