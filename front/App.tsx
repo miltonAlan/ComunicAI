@@ -12,7 +12,7 @@ export default function App() {
     "lightgray"
   );
   const handleSpeakResults = () => {
-    // Unir los resultados en una sola cadena
+    // Unir los resultados en una sola cadena--- prueba de guardar en rama
     const textToSpeak = state.results[0];
     // Verificar si hay resultados para evitar errores
     if (textToSpeak.trim().length > 0) {
