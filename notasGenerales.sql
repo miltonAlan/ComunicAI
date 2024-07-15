@@ -38,3 +38,10 @@ https://www.youtube.com/watch?v=FBv4PrW5wqY&t=665s&ab_channel=CodewithBetoenEspa
 - npm install -g eas-cli
 - eas build:configure
 - eas build -p android --profile preview
+------------------------------------------------------------------------------------
+-BACKEND
+------------------------------------------------------------------------------------
+npm i -g @nestjs/cli
+yarn add openai
+yarn add dotenv
+yarn add cors
