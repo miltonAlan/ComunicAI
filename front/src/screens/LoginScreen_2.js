@@ -42,10 +42,12 @@ const LoginScreen_2 = () => {
             Alert.alert('Error', 'Hubo un problema al intentar iniciar sesión. Por favor, inténtalo de nuevo más tarde.');
         }
     };
-
+    const handleSignUp = () => {
+        navigation.navigate('SignUpScreen'); // Asume que 'SignUp' es el nombre de la pantalla de registro
+    };
     return (
         <View style={styles.root}>
-            <Image 
+            <Image
                 source={Logo}
                 style={[styles.logo, { height: height * 0.3 }]}
                 resizeMode='contain'
@@ -67,6 +69,10 @@ const LoginScreen_2 = () => {
                 <Button
                     title="Login"
                     onPress={handleLogin}
+                />
+                <Button
+                    title="Sign Up"
+                    onPress={handleSignUp}
                 />
             </View>
         </View>

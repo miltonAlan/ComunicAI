@@ -140,6 +140,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Idiomas from './src/screens/Idiomas';
 import Untitled from './src/screens/Untitled';
 import LoginScreen_2 from './src/screens/LoginScreen_2';
+import SignUpScreen from './src/screens/SignUpScreen_2.1';
 
 const Stack = createStackNavigator();
 
@@ -150,6 +151,7 @@ export default function App() {
         <Stack.Screen name="Login" component={LoginScreen_2} />
         <Stack.Screen name="Idiomas" component={Idiomas} />
         <Stack.Screen name="Untitled" component={Untitled} />
+        <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
