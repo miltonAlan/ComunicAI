@@ -5,7 +5,7 @@ import Logo from '../../assets/logo.png';
 import CustomInput from '../components/CustomInput';
 import Button from '../components/Button';
 
-const LoginScreen = () => {
+const LoginScreen_2 = () => {
     const { height } = useWindowDimensions();
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
@@ -99,4 +99,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default LoginScreen;
+export default LoginScreen_2;
