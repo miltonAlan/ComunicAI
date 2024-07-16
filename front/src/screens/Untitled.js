@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet, View, Image, TextInput, Alert, TouchableOpacity, Text } from "react-native";
 import MaterialIconsIcon from "react-native-vector-icons/MaterialIcons";
@@ -7,17 +7,54 @@ import FeatherIcon from "react-native-vector-icons/Feather";
 import MaterialButtonShare1 from "../components/MaterialButtonShare1";
 import { useVoiceRecognition } from "../hooks/useVoiceRecognition";
 import Tts from 'react-native-tts';
+
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
-const Untitled = () => {
-  
+
+function Untitled({ route }){
+
+  const [languages, setLanguages] = useState([]);
   const [imput, setImput] = useState('')
   const [result, setResult] = useState('')
   const [message, setMessage] = useState('');
   const { state, startRecognizing, stopRecognizing, destroyRecognizer } =
   useVoiceRecognition();
   console.log('useVoiceRecognition return value:', { state, startRecognizing, stopRecognizing, destroyRecognizer });
+
+  const { myString } = route.params;
+  console.log(myString);
+  useEffect(() => {
+    fetchIdiomas();
+  }, []);
+
+  const fetchIdiomas = async () => {
+    try {
+      const response = await fetch("http://192.168.100.20:3000/languages");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setLanguages(data);
+    } catch (error) {
+      console.error("Error al obtener los idiomas:", error);
+    }
+  };
+
+  const findLanguageByName = (languages, name) => {
+    return languages.find(language => language.name === name);
+  };
+  
+  // Encontrar idioma:
+  const languageName = myString;
+  const language = findLanguageByName(languages, languageName);
+  
+  if (language) {
+    console.log(`Abreviatura: ${language.abbreviation}, URL de la bandera: ${language.flagUrl}`);
+  } else {
+    console.log("Idioma no encontrado");
+  }
+  
 
   const handleSpeakResultsSup = () => {
     // Unir los resultados en una sola cadena
@@ -70,7 +107,7 @@ const Untitled = () => {
             <MaterialButtonShare
               style={styles.materialButtonShare}
               onPressIn={() => {
-                startRecognizing();
+                startRecognizing(language.abbreviation);
                 
               }}
               onPressOut={() => {
@@ -107,7 +144,7 @@ const Untitled = () => {
           <MaterialButtonShare1
             style={styles.materialButtonShare1}
             onPressIn={() => {
-              startRecognizing();
+              startRecognizing(language.abbreviation);
             }}
             onPressOut={() => {
               stopRecognizing();
@@ -150,7 +187,7 @@ const Untitled = () => {
             style={styles.image2}
           ></Image>
         </TouchableOpacity>
-        <Text style={styles.ingles}>Inglés</Text>
+        <Text style={styles.text1}>{myString}</Text>
         <Text style={styles.espanol}>Español</Text>
         <StatusBar style="auto" />
       </View>
@@ -294,9 +331,9 @@ const styles = StyleSheet.create({
     height: 62,
     position: "absolute"
   },
-  ingles: {
+  text1: {
     top: 405,
-    left: 76,
+    left: 60,
     position: "absolute",
     fontFamily: "ABeeZee",
     color: "#121212",
