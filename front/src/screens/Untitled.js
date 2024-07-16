@@ -1,22 +1,36 @@
 import React, {useState} from "react";
-import { StyleSheet, View, Image, TextInput, Alert, TouchableOpacity, Text } from "react-native";
+import { StatusBar } from 'expo-status-bar';
+import { SafeAreaView, StyleSheet, View, Image, TextInput, Alert, TouchableOpacity, Text } from "react-native";
 import MaterialIconsIcon from "react-native-vector-icons/MaterialIcons";
 import MaterialButtonShare from "../components/MaterialButtonShare";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import MaterialButtonShare1 from "../components/MaterialButtonShare1";
 import { useVoiceRecognition } from "../hooks/useVoiceRecognition";
-import Tts from 'react-native-tts'; 
+import Tts from 'react-native-tts';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
 
 const Untitled = () => {
+  
   const [imput, setImput] = useState('')
   const [result, setResult] = useState('')
+  const [message, setMessage] = useState('');
   const { state, startRecognizing, stopRecognizing, destroyRecognizer } =
   useVoiceRecognition();
   console.log('useVoiceRecognition return value:', { state, startRecognizing, stopRecognizing, destroyRecognizer });
 
-  const handleSpeakResults = () => {
+  const handleSpeakResultsSup = () => {
     // Unir los resultados en una sola cadena
-    const textToSpeak = state.results[0];
+    const textToSpeak = result
+    // Verificar si hay resultados para evitar errores
+    if (textToSpeak.trim().length > 0) {
+      Tts.speak(textToSpeak);
+    }
+  };
+
+  const handleSpeakResultsInf = () => {
+    // Unir los resultados en una sola cadena
+    const textToSpeak = imput
     // Verificar si hay resultados para evitar errores
     if (textToSpeak.trim().length > 0) {
       Tts.speak(textToSpeak);
@@ -24,98 +38,128 @@ const Untitled = () => {
   };
 
   const handlePress = () => {
-    Alert.alert('Botón presionado');
+    Alert.alert('Traducción realizada');
     setResult(imput)
   };
+
+  const handlePress2 = (text) => {
+    setMessage(text);
+    Alert.alert(text);
+    
+  };
+
+  const talkSup = () => {
+    const jsonString = JSON.stringify(state.partialResults);
+    const text = jsonString.replace(/[\[\]{}"]/g, '');
+    setResult(text);
+  }
+
+  const talkInf = () => {
+    const jsonString = JSON.stringify(state.partialResults);
+    const text = jsonString.replace(/[\[\]{}"]/g, '');
+    setImput(text);
+  }
   return (
-    <View style={styles.container}>
-      <View style={styles.rect}>
-        <View style={styles.icon5Row}>
-          <MaterialIconsIcon
-            name="arrow-back"
-            style={styles.icon5}
-          ></MaterialIconsIcon>
-          <MaterialButtonShare
-            style={styles.materialButtonShare}
+      <View style={styles.container}>
+        <View style={styles.rect}>
+          <View style={styles.icon5Row}>
+            <MaterialIconsIcon
+              name="arrow-back"
+              style={styles.icon5}
+            ></MaterialIconsIcon>
+            <MaterialButtonShare
+              style={styles.materialButtonShare}
+              onPressIn={() => {
+                startRecognizing();
+                
+              }}
+              onPressOut={() => {
+                stopRecognizing();
+                talkSup();
+              }}
+            ></MaterialButtonShare>
+            <FeatherIcon name="settings" style={styles.icon6}></FeatherIcon>
+          </View>
+          <TextInput
+            placeholder=""
+            placeholderTextColor="rgba(0,0,0,1)"
+            editable={true}
+            multiline={true}
+            autoCapitalize="sentences"
+            style={styles.textInput2}
+            value={result}
+            onChangeText={setResult}
+          ></TextInput>
+          <View style={styles.image1Row}>
+            <TouchableOpacity onPress={handleSpeakResultsSup}>
+              <Image
+                source={require("../assets/images/Volume_low_1.png")}
+                resizeMode="contain"
+                style={styles.image1}
+              ></Image>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handlePress2('Copiado al portapapeles')}>
+              <FeatherIcon name="copy" style={styles.icon4}></FeatherIcon>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.materialButtonShare1Stack}>
+          <MaterialButtonShare1
+            style={styles.materialButtonShare1}
             onPressIn={() => {
               startRecognizing();
-              
             }}
             onPressOut={() => {
               stopRecognizing();
+              talkInf();
             }}
-          ></MaterialButtonShare>
-          <FeatherIcon name="settings" style={styles.icon6}></FeatherIcon>
-        </View>
-        <TextInput
-          placeholder=""
-          placeholderTextColor="rgba(0,0,0,1)"
-          editable={false}
-          multiline={true}
-          style={styles.textInput2}
-          value={JSON.stringify(state.partialResults)}
-        ></TextInput>
-        <View style={styles.image1Row}>
-          <TouchableOpacity onPress={handleSpeakResults}>
-            <Image
-              source={require("../assets/images/Volume_low_1.png")}
-              resizeMode="contain"
-              style={styles.image1}
-            ></Image>
-          </TouchableOpacity>
-          <FeatherIcon name="copy" style={styles.icon4}></FeatherIcon>
-        </View>
-      </View>
-      <View style={styles.materialButtonShare1Stack}>
-        <MaterialButtonShare1
-          style={styles.materialButtonShare1}
-          onPressIn={() => {
             
-          }}
-          onPressOut={() => {
-            
-          }}
-        ></MaterialButtonShare1>
-        <View style={styles.icon2Stack}>
+          ></MaterialButtonShare1>
+          <View style={styles.icon2Stack}>
+            <MaterialIconsIcon
+              name="history"
+              style={styles.icon2}
+            ></MaterialIconsIcon>
+            <TextInput
+              placeholder=""
+              multiline={true}
+              style={styles.textInput}
+              value={imput}
+              onChangeText={setImput}
+              autoCapitalize="sentences"
+            ></TextInput>
+          </View>
+        </View>
+        <TouchableOpacity onPress={() => handlePress2('Añadido a favoritos')}>
           <MaterialIconsIcon
-            name="history"
-            style={styles.icon2}
+              name="favorite-border" style={styles.icon}
           ></MaterialIconsIcon>
-          <TextInput
-            placeholder=""
-            multiline={true}
-            style={styles.textInput}
-            value={imput}
-            onChangeText={setImput}
-          ></TextInput>
-        </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleSpeakResultsInf }>
+          <Image
+            source={require("../assets/images/Volume_low_1.png")}
+            resizeMode="contain"
+            style={styles.image}
+          ></Image>
+        </TouchableOpacity>
+        <View style={styles.rect2}></View>
+        <TouchableOpacity onPress={handlePress}>
+          <Image
+            source={require("../assets/images/Image_52.png")}
+            resizeMode="contain"
+            style={styles.image2}
+          ></Image>
+        </TouchableOpacity>
+        <Text style={styles.ingles}>Inglés</Text>
+        <Text style={styles.espanol}>Español</Text>
+        <StatusBar style="auto" />
       </View>
-      <MaterialIconsIcon
-        name="favorite-border"
-        style={styles.icon}
-      ></MaterialIconsIcon>
-      <TouchableOpacity>
-        <Image
-          source={require("../assets/images/Volume_low_1.png")}
-          resizeMode="contain"
-          style={styles.image}
-        ></Image>
-      </TouchableOpacity>
-      <View style={styles.rect2}></View>
-      <TouchableOpacity onPress={handlePress}>
-        <Image
-          source={require("../assets/images/Image_52.png")}
-          resizeMode="contain"
-          style={styles.image2}
-        ></Image>
-      </TouchableOpacity>
-      <Text style={styles.ingles}>Inglés</Text>
-      <Text style={styles.espanol}>Español</Text>
-    </View>
+    
   );
 }
 
 const styles = StyleSheet.create({
+  
   container: {
     flex: 1
   },
@@ -159,13 +203,14 @@ const styles = StyleSheet.create({
     marginRight: 17
   },
   textInput2: {
-    fontFamily: "roboto-regular",
-    color: "rgba(5,5,5,1)",
+    fontFamily: "verdana-regular",
+    color: "rgba(18,18,17,1)",
     fontSize: 18,
     width: 286,
     height: 196,
     marginTop: 11,
-    marginLeft: 37
+    marginLeft: 37,
+    backgroundColor:"rgba(41,118,206,1)"
   },
   image1: {
     width: 51,
@@ -205,12 +250,11 @@ const styles = StyleSheet.create({
   textInput: {
     top: 0,
     left: 0,
-    position: "absolute",
-    fontFamily: "alexandria-500",
-    color: "#121212",
+    color: "rgba(18,18,17,1)",
+    fontFamily: "verdana-regular",
     width: 286,
     height: 181,
-    fontSize: 15,
+    fontSize: 18,
     backgroundColor: "rgba(230,226,238,1)"
   },
   icon2Stack: {
@@ -254,7 +298,7 @@ const styles = StyleSheet.create({
     top: 405,
     left: 76,
     position: "absolute",
-    fontFamily: "roboto-regular",
+    fontFamily: "ABeeZee",
     color: "#121212",
     fontSize: 20
   },
@@ -262,7 +306,7 @@ const styles = StyleSheet.create({
     top: 405,
     left: 217,
     position: "absolute",
-    fontFamily: "roboto-regular",
+    fontFamily: "ABeeZee",
     color: "#121212",
     fontSize: 20
   }
