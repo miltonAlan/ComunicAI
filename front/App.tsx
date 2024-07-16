@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 // Importa tus pantallas
-import Untitled from './src/screens/Untitled';
+import Idiomas from './src/screens/Idiomas';
 
 
 export default function App() {
@@ -117,7 +117,7 @@ export default function App() {
   return (
     
       <NavigationContainer>
-        <Untitled/>
+        <Idiomas/>
       </NavigationContainer>
     
   );
