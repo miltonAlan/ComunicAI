@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native'; // Importar useNavigat
 import Logo from '../../assets/logo.png';
 import CustomInput from '../components/CustomInput';
 import Button from '../components/Button';
+import Globals from '../utils/globals'; // Importar el archivo de variables globales
+
 
 const LoginScreen_2 = () => {
     const { height } = useWindowDimensions();
@@ -13,7 +15,7 @@ const LoginScreen_2 = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await fetch('http://192.168.100.10:3000/users/login', {
+            const response = await fetch(`http://${Globals.ENDPOINT_IP}:3000/users/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
