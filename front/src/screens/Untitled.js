@@ -7,7 +7,7 @@ import FeatherIcon from "react-native-vector-icons/Feather";
 import MaterialButtonShare1 from "../components/MaterialButtonShare1";
 import { useVoiceRecognition } from "../hooks/useVoiceRecognition";
 import Tts from 'react-native-tts';
-
+import Globals from "../utils/globals";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
@@ -30,7 +30,7 @@ function Untitled({ route }){
 
   const fetchIdiomas = async () => {
     try {
-      const response = await fetch("http://192.168.100.20:3000/languages");
+      const response = await fetch(`http://${Globals.ENDPOINT_IP}:3000/languages`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
