@@ -30,7 +30,7 @@ export class AppModule implements OnModuleInit {
 
   async onModuleInit() {
     // Ejecutar semillas al iniciar la aplicación
-    await createUsers(this.connection);
+    // await createUsers(this.connection); // comento esto para ingresar una sola vez los usuarios
     console.log('Seeds ejecutados correctamente');
   }
 }
