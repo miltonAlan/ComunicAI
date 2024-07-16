@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { View, Image, StyleSheet, useWindowDimensions, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Importar useNavigation
 import Logo from '../../assets/logo.png';
 import CustomInput from '../components/CustomInput';
-import Button from '../components/Button'; // Importar el componente Button
+import Button from '../components/Button';
 
 const LoginScreen = () => {
     const { height } = useWindowDimensions();
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
+    const navigation = useNavigation(); // Obtener el objeto de navegación
 
     const handleLogin = async () => {
         try {
@@ -21,30 +23,24 @@ const LoginScreen = () => {
                     password: password,
                 }),
             });
-    
+
             if (!response.ok) {
-                // Aquí manejamos el caso de que el servidor responde con un código de error
-                // Por ejemplo, 401 Unauthorized si las credenciales son inválidas
                 Alert.alert('Error', 'Credenciales inválidas. Por favor, inténtalo de nuevo.');
                 return;
             }
-    
+
             const data = await response.json();
-    
-            // Aquí puedes manejar la respuesta exitosa
             console.log('Respuesta del servidor:', data);
-    
-            // Ejemplo de cómo podrías redirigir a otra pantalla después del login exitoso
-            // navigation.navigate('Home');
-    
+
+            // Redirigir a la pantalla de Idiomas después del login exitoso
+            navigation.navigate('Idiomas');
+
         } catch (error) {
             console.error('Error al autenticar usuario:', error);
-            // Aquí puedes manejar otros errores, por ejemplo de red
             Alert.alert('Error', 'Hubo un problema al intentar iniciar sesión. Por favor, inténtalo de nuevo más tarde.');
         }
     };
-    
-    
+
     return (
         <View style={styles.root}>
             <Image 
@@ -57,18 +53,18 @@ const LoginScreen = () => {
                     placeholder="UserName"
                     value={userName}
                     setValue={setUserName}
-                    style={styles.customInput} // Aplicar estilo personalizado
+                    style={styles.customInput}
                 />
                 <CustomInput
                     placeholder="Password"
                     value={password}
                     setValue={setPassword}
-                    secureTextEntry={true} // Ocultar texto mientras se escribe
-                    style={styles.customInput} // Aplicar estilo personalizado
+                    secureTextEntry={true}
+                    style={styles.customInput}
                 />
                 <Button
-                    title="Login" // Texto del botón
-                    onPress={handleLogin} // Función para manejar el evento onPress del botón
+                    title="Login"
+                    onPress={handleLogin}
                 />
             </View>
         </View>
@@ -78,14 +74,14 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
     root: {
         flex: 1,
-        alignItems: 'center', // Centrar horizontalmente
+        alignItems: 'center',
         padding: 20,
-        backgroundColor: '#e8e8e8', // Color de fondo de la pantalla
+        backgroundColor: '#e8e8e8',
     },
     logo: {
         width: '70%',
-        alignSelf: 'center', // Centrar horizontalmente la imagen
-        maxHeight: 200, // Ajusta la altura máxima según sea necesario
+        alignSelf: 'center',
+        maxHeight: 200,
     },
     customInputContainer: {
         width: '100%',
@@ -94,7 +90,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     customInput: {
-        backgroundColor: 'white', // Fondo blanco para inputs
+        backgroundColor: 'white',
         height: 40,
         borderColor: '#e8e8e8',
         borderWidth: 1,
