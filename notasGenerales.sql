@@ -59,8 +59,9 @@ prueba de endpoints
     - endpoint de interpretacion
         - http://localhost:3000/interpret
             {
-            "message": "Ayer fui al par con unos am, jugué fút con mis a, comimos pizza y vimos una peli en c",
-            "language": "en"
+              "originalMessage": "hoy fui al mercad y compr unos frut",
+              "originalLanguage": "es",
+              "destinationLanguage": "pt"
             }
 
 
