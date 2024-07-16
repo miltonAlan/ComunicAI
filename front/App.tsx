@@ -1,8 +1,9 @@
-/*import { StatusBar } from 'expo-status-bar';
+/*
+import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from "react";
 import {Image, Pressable, StyleSheet, Text, View, Button } from "react-native";
 import * as FileSystem from "expo-file-system";
-import { useVoiceRecognition } from './hooks/useVoiceRecognition';
+import { useVoiceRecognition } from './src/hooks/useVoiceRecognition';
 import Tts from 'react-native-tts'; 
 
 export default function App() {
