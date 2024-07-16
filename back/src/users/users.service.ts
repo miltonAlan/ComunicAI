@@ -31,4 +31,11 @@ export class UsersService {
   async remove(id: number): Promise<void> {
     await this.usersRepository.delete(id);
   }
+
+  async findByUsernameAndPassword(username: string, password: string): Promise<User | null> {
+    const user = await this.usersRepository.findOne({
+      where: { username, password },
+    });
+    return user || null;
+  }
 }

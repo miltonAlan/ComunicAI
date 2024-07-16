@@ -12,7 +12,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 
 
-const Untitled = ({route}) => {
+function Untitled({ route }){
 
   const [languages, setLanguages] = useState([]);
   const [imput, setImput] = useState('')
@@ -23,7 +23,7 @@ const Untitled = ({route}) => {
   console.log('useVoiceRecognition return value:', { state, startRecognizing, stopRecognizing, destroyRecognizer });
 
   const { myString } = route.params;
-
+  console.log(myString);
   useEffect(() => {
     fetchIdiomas();
   }, []);
@@ -46,7 +46,7 @@ const Untitled = ({route}) => {
   };
   
   // Encontrar idioma:
-  const languageName = {myString};
+  const languageName = myString;
   const language = findLanguageByName(languages, languageName);
   
   if (language) {
@@ -107,7 +107,7 @@ const Untitled = ({route}) => {
             <MaterialButtonShare
               style={styles.materialButtonShare}
               onPressIn={() => {
-                startRecognizing({myString});
+                startRecognizing(language.abbreviation);
                 
               }}
               onPressOut={() => {
@@ -144,7 +144,7 @@ const Untitled = ({route}) => {
           <MaterialButtonShare1
             style={styles.materialButtonShare1}
             onPressIn={() => {
-              startRecognizing({myString});
+              startRecognizing(language.abbreviation);
             }}
             onPressOut={() => {
               stopRecognizing();
@@ -187,7 +187,7 @@ const Untitled = ({route}) => {
             style={styles.image2}
           ></Image>
         </TouchableOpacity>
-        <Text style={styles.ingles}>Inglés</Text>
+        <Text style={styles.text1}>{myString}</Text>
         <Text style={styles.espanol}>Español</Text>
         <StatusBar style="auto" />
       </View>
@@ -331,9 +331,9 @@ const styles = StyleSheet.create({
     height: 62,
     position: "absolute"
   },
-  ingles: {
+  text1: {
     top: 405,
-    left: 76,
+    left: 60,
     position: "absolute",
     fontFamily: "ABeeZee",
     color: "#121212",
