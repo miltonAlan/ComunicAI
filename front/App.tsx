@@ -104,12 +104,12 @@ const styles = StyleSheet.create({
     marginBottom: 1,
   },
 });
-*/
+
 
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 // Importa tus pantallas
-import Idiomas from './src/screens/Idiomas';
+import Untitled from './src/screens/Untitled';
 
 
 export default function App() {
@@ -117,8 +117,27 @@ export default function App() {
   return (
     
       <NavigationContainer>
-        <Idiomas/>
+        <Untitled/>
       </NavigationContainer>
     
+  );
+}
+*/
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Idiomas from './src/screens/Idiomas';
+import Untitled from './src/screens/Untitled';
+
+const Stack = createStackNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Idiomas">
+        <Stack.Screen name="Idiomas" component={Idiomas} />
+        <Stack.Screen name="Recording" component={Untitled} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }

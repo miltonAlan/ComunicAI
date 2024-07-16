@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect }  from "react";
 import { StatusBar } from 'expo-status-bar';
 import {
   StyleSheet,
@@ -9,7 +9,27 @@ import {
   ScrollView
 } from "react-native";
 
-function Idiomas(props) {
+const Idiomas = ({navigation}) =>{
+  /*
+  const [idiomas, setIdiomas] = useState([]);
+
+  useEffect(() => {
+    fetchIdiomas();
+  }, []);
+
+  const fetchIdiomas = async () => {
+    try {
+      const response = await fetch("http://192.168.100.20:3000/languages");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setIdiomas(data);
+    } catch (error) {
+      console.error("Error al obtener los idiomas:", error);
+    }
+  }
+  */
   return (
     <View style={styles.container}>
       <View style={styles.rect}>
@@ -19,17 +39,19 @@ function Idiomas(props) {
         <Text style={styles.usadoRecientemente}>Usado recientemente</Text>
       </View>
       <View style={styles.rect3}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Untitled', { myString: "Español"})}>
           <View style={styles.imageRow}>
             <Image
               source={require("../assets/images/image_OABE..png")}
               resizeMode="contain"
               style={styles.image}
             ></Image>
-            <Text style={styles.espanolMejicano}>Español (Mejicano)</Text>
+            <Text style={styles.espanolMejicano}>
+              Español (Mejicano)
+            </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button2}>
+        <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate('Untitled', { myString: "Español"})}>
           <View style={styles.image2Row}>
             <Image
               source={require("../assets/images/image_rM93..png")}
@@ -39,7 +61,7 @@ function Idiomas(props) {
             <Text style={styles.espanolEspana}>Español (España)</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button3}>
+        <TouchableOpacity style={styles.button3} onPress={() => navigation.navigate('Untitled', { myString: "English"})}>
           <View style={styles.image3Row}>
             <Image
               source={require("../assets/images/image_gdRP..png")}

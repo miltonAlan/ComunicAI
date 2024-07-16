@@ -40,10 +40,10 @@ export const useVoiceRecognition = () => {
     });
   }, [setState]);
 
-  const startRecognizing = useCallback(async () => {
+  const startRecognizing = useCallback(async (languaje="en-US") => {
     resetState();
     try {
-      await Voice.start("en-US");
+      await Voice.start(languaje);
     } catch (e) {
       console.error(e);
     }
