@@ -139,13 +139,15 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Idiomas from './src/screens/Idiomas';
 import Untitled from './src/screens/Untitled';
+import LoginScreen_2 from './src/screens/LoginScreen_2';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Idiomas">
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={LoginScreen_2} />
         <Stack.Screen name="Idiomas" component={Idiomas} />
         <Stack.Screen name="Untitled" component={Untitled} />
       </Stack.Navigator>

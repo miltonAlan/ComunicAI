@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView
 } from "react-native";
+import Globals from '../utils/globals'; 
 
 function Idiomas({ navigation }){
   
@@ -19,7 +20,7 @@ function Idiomas({ navigation }){
 
   const fetchIdiomas = async () => {
     try {
-      const response = await fetch("http://192.168.100.20:3000/languages");
+      const response = await fetch(`http://${Globals.ENDPOINT_IP}:3000/languages`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
