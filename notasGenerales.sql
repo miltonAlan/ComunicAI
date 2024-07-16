@@ -41,22 +41,27 @@ https://www.youtube.com/watch?v=FBv4PrW5wqY&t=665s&ab_channel=CodewithBetoenEspa
 ------------------------------------------------------------------------------------
 -BACKEND
 ------------------------------------------------------------------------------------
-npm i -g @nestjs/cli
+1 Instalar CLI de nest
+    - npm i -g @nestjs/cli
 
-yarn add openai
-yarn add dotenv
-yarn add cors
+2. primero esta (nivel de la carpeta 'back')
+    - yarn install
 
-iniciar server
-    - yarn start dev
+en caso de que les falte alguna dependencia (opcional)
+    - yarn add openai
+    - yarn add dotenv
+    - yarn add cors
+3. crear el .env (en la carpeta back)
+
+4. iniciar server
     - yarn start --watch
 
 prueba de endpoints
-    - ejemplo enviarle cualquier texto a gpt
+    - ejemplo enviarle cualquier texto a gpt (POST)
         - http://localhost:3000/ask
             {"question": "que haces, estas vivo?"}
 
-    - endpoint de interpretacion
+    - endpoint de interpretacion (POST)
         - http://localhost:3000/interpret
             {
               "originalMessage": "hoy fui al mercad y compr unos frut",
