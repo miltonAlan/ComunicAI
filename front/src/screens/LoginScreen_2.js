@@ -37,7 +37,7 @@ const LoginScreen_2 = () => {
             const data = await response.json();
             console.log('Respuesta del servidor:', data);
 
-            navigation.navigate('Idiomas');
+            navigation.navigate('Interpreter');
 
         } catch (error) {
             console.error('Error al autenticar usuario:', error);

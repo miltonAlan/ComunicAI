@@ -27,13 +27,16 @@ export class ChatgptService {
       const messages = [
         {
           role: 'system',
-          content: `Eres un intérprete de idiomas. Primero, 
-          corrige el lenguaje original en ${originalLanguage}. 
+          content: `Eres un intérprete de idiomas.
+          Primero:
+          Corrige el lenguaje original escrito en:${originalLanguage}. 
+            - cuida de corregir la gramatica y dale forma en la estructura mas clara del lenguaje ${originalLanguage}.
           Luego, traduce y da sentido a las frases, verbos frasales o expresiones 
           propias de ${originalLanguage} al ${destinationLanguage}.
-          Debes responderme de la siguiente manera:
-          <${originalLanguage.toUpperCase()}> Mensaje original corregido : (la frase o texto que recibas)
-          <${destinationLanguage.toUpperCase()}> Mensaje traducido e interpretado: (la frase o texto interpretada y traducida correctamente)`
+          Debes responderme de la siguiente manera, cuida de no poner ningun simbolo al final pues puedes arruinar la respuesta.
+          Responde en formato JSON.
+          objeto 1 (del JSON): Mensaje original corregida su gramatica y demás: (la frase o texto que recibas)
+          objeto 2 (del JSON): Mensaje traducido e interpretado: (la frase o texto interpretada y traducida correctamente)`
         },
         ...this.conversationHistory.map(msg => ({
           role: msg.role,
