@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import Globals from '../utils/globals';
 import { useVoiceRecognition } from '../hooks/useVoiceRecognition';
+import Tts from 'react-native-tts';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -69,6 +70,7 @@ const Interpreter_3 = () => {
 
   const handleSoundButtonPressFirstHalf = () => {
     console.log('Botón presionado:', 'Sonido Primera Mitad');
+    handleSpeakResults(languageFrom, textFirstHalf);
     // Aquí podrías agregar la lógica adicional que necesites
   };
 
@@ -79,12 +81,21 @@ const Interpreter_3 = () => {
 
   const handleSoundButtonPressSecondHalf = () => {
     console.log('Botón presionado:', 'Sonido Segunda Mitad');
+    handleSpeakResults(languageTo, textSecondHalf);
     // Aquí podrías agregar la lógica adicional que necesites
   };
 
   const handleEnterButtonPressSecondHalf = () => {
     console.log('Botón presionado:', 'Enter Segunda Mitad');
   };
+
+  const handleSpeakResults = (language, textToSpeak) => {
+    if (textToSpeak.trim().length > 0) {
+      Tts.setDefaultLanguage(language); // Establecer el idioma deseado
+      Tts.setDefaultRate(0.5); // Velocidad de habla al 50%
+      Tts.speak(textToSpeak);
+    }
+  };  
 
   // Actualizar resultados de reconocimiento en los estados correspondientes
   useEffect(() => {
