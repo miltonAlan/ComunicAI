@@ -1487,6 +1487,11 @@
     prompts "^2.4.2"
     semver "^7.5.2"
 
+"@react-native-picker/picker@^2.7.7":
+  version "2.7.7"
+  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-2.7.7.tgz#6e19c3a72a482be015f5194794e6c14efe8762e8"
+  integrity sha512-CTHthVmx8ujlH/u5AnxLQfsheh/DoEbo+Kbx0HGTlbKVLC1eZ4Kr9jXIIUcwB7JEgOXifdZIPQCsoTc/7GQ0ag==
+
 "@react-native-voice/voice@^3.2.4":
   version "3.2.4"
   resolved "https://registry.npmjs.org/@react-native-voice/voice/-/voice-3.2.4.tgz"
