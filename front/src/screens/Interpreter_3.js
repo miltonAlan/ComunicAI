@@ -50,10 +50,38 @@ const Interpreter_3 = () => {
     setLanguageTo(value);
   };
 
+  const handleSoundButtonPressFirstHalf = () => {
+    console.log('Botón presionado:', 'Sonido Primera Mitad');
+    // Aquí podrías agregar la lógica adicional que necesites
+  };
+
+  const handleEnterButtonPressFirstHalf = () => {
+    console.log('Botón presionado:', 'Enter Primera Mitad');
+    // Aquí podrías agregar la lógica adicional que necesites
+  };
+
+  const handleSoundButtonPressSecondHalf = () => {
+    console.log('Botón presionado:', 'Sonido Segunda Mitad');
+    // Aquí podrías agregar la lógica adicional que necesites
+  };
+
+  const handleEnterButtonPressSecondHalf = () => {
+    console.log('Botón presionado:', 'Enter Segunda Mitad');
+    // Aquí podrías agregar la lógica adicional que necesites
+  };
   return (
     <View style={styles.container}>
       {/* Primera mitad */}
       <View style={[styles.halfContainer, styles.firstHalf]}>
+        {/* Botón de sonido */}
+        <TouchableOpacity style={styles.soundButtonFirstHalf} onPress={handleSoundButtonPressFirstHalf}>
+          <Ionicons name="volume-high-outline" size={24} color="white" />
+        </TouchableOpacity>
+        {/* Botón de cerebro */}
+        <TouchableOpacity style={styles.brainButtonFirstHalf} onPress={handleEnterButtonPressFirstHalf}>
+          <Ionicons name="enter" size={24} color="white" />
+        </TouchableOpacity>
+        {/* Botón de micrófono */}
         <TouchableOpacity style={styles.micButtonFirstHalf} onPress={handleMicPressFirstHalf}>
           <Ionicons name="mic" size={32} color="white" />
         </TouchableOpacity>
@@ -81,7 +109,7 @@ const Interpreter_3 = () => {
             ))}
           </Picker>
 
-          <Ionicons name="sync" size={32} color="black" style={styles.icon} />
+          <Ionicons name="logo-facebook" size={32} color="black" style={styles.icon} />
 
           <Picker
             selectedValue={languageTo}
@@ -96,6 +124,15 @@ const Interpreter_3 = () => {
 
       {/* Segunda mitad */}
       <View style={[styles.halfContainer, styles.secondHalf]}>
+        {/* Botón de sonido */}
+        <TouchableOpacity style={styles.soundButtonSecondHalf} onPress={handleSoundButtonPressSecondHalf}>
+          <Ionicons name="volume-high-outline" size={24} color="white" />
+        </TouchableOpacity>
+        {/* Botón de cerebro */}
+        <TouchableOpacity style={styles.brainButtonSecondHalf} onPress={handleEnterButtonPressSecondHalf}>
+          <Ionicons name="enter" size={24} color="white" />
+        </TouchableOpacity>
+        {/* Botón de micrófono */}
         <TouchableOpacity style={styles.micButtonSecondHalf} onPress={handleMicPressSecondHalf}>
           <Ionicons name="mic" size={32} color="white" />
         </TouchableOpacity>
@@ -136,17 +173,17 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '90%',
-    height: '60%',
+    height: '55%',
     borderColor: 'gray',
     borderWidth: 1,
     paddingHorizontal: 10,
     marginBottom: 10,
   },
   textInputFirstHalf: {
-    marginTop: '15%', // Espacio en la parte superior
+    marginTop: '1%', // Espacio en la parte superior
   },
   textInputSecondHalf: {
-    marginTop: '-15%', // Sin espacio en la parte superior
+    marginTop: '-1%', // Sin espacio en la parte superior
   },
   middleContent: {
     flexDirection: 'row',
@@ -168,19 +205,59 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: 'blue', // Color azul para la primera mitad
     borderRadius: 50,
-    padding: 10,
+    padding: 3,
     alignItems: 'center',
     justifyContent: 'center',
-    top: '8%', // Posición arriba para la primera mitad
+    top: '1%', // Posición arriba para la primera mitad
   },
   micButtonSecondHalf: {
     position: 'absolute',
     backgroundColor: 'red', // Color rojo para la segunda mitad (ejemplo)
     borderRadius: 50,
-    padding: 10,
+    padding: 3,
     alignItems: 'center',
     justifyContent: 'center',
-    bottom: '8%', // Posición abajo para la segunda mitad
+    bottom: '1%', // Posición abajo para la segunda mitad
+  },
+  soundButtonFirstHalf: {
+    position: 'absolute',
+    backgroundColor: '#4CAF50', // Color verde para el botón de sonido en la primera mitad
+    borderRadius: 25,
+    padding: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    bottom: 10, // Posición en la esquina inferior derecha
+    right: 10,
+  },
+  brainButtonFirstHalf: {
+    position: 'absolute',
+    backgroundColor: '#2196F3', // Color azul para el botón de cerebro en la primera mitad
+    borderRadius: 25,
+    padding: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    bottom: 10, // Posición en la esquina inferior izquierda
+    left: 10,
+  },
+  brainButtonSecondHalf: {
+    position: 'absolute',
+    backgroundColor: '#2196F3', // Color azul para el botón de cerebro en la segunda mitad
+    borderRadius: 25,
+    padding: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: 10, // Posición en la esquina superior derecha
+    right: 10,
+  },
+  soundButtonSecondHalf: {
+    position: 'absolute',
+    backgroundColor: '#4CAF50', // Color verde para el botón de sonido en la segunda mitad
+    borderRadius: 10,
+    padding: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: 10, // Posición en la esquina superior izquierda
+    left: 10,
   },
 });
 export default Interpreter_3;
