@@ -3,6 +3,8 @@ import { StyleSheet, View, Dimensions, TextInput, TouchableOpacity } from 'react
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import Globals from '../utils/globals';
+import { useVoiceRecognition } from '../hooks/useVoiceRecognition';
+import Tts from 'react-native-tts';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -10,9 +12,13 @@ const windowHeight = Dimensions.get('window').height;
 const Interpreter_3 = () => {
   const [textFirstHalf, setTextFirstHalf] = useState('');
   const [textSecondHalf, setTextSecondHalf] = useState('');
-  const [languageFrom, setLanguageFrom] = useState('');
-  const [languageTo, setLanguageTo] = useState('');
+  const [languageFrom, setLanguageFrom] = useState('es-MX');
+  const [languageFromResult, setLanguageFromResult] = useState('en-US');
+  const [languageTo, setLanguageTo] = useState('en-US');
+  const [languageToResult, setLanguageToResult] = useState('es-MX');
   const [languages, setLanguages] = useState([]);
+  const { state: state, startRecognizing: startRecognizing, stopRecognizing: stopRecognizing } = useVoiceRecognition();
+  const [activeHalf, setActiveHalf] = useState(null);
 
   useEffect(() => {
     fetchLanguages(); // Llamar a la función para cargar los idiomas
@@ -34,12 +40,26 @@ const Interpreter_3 = () => {
     }
   };
 
-  const handleMicPressFirstHalf = () => {
-    setTextFirstHalf('Escuchando usuario...');
+  const handleMicPressInFirstHalf = () => {
+    console.log('Micrófono Primera Mitad presionado');
+    console.log('languageFrom:', languageFrom); // Imprime el valor seleccionado en languageFrom
+    startRecognizing(languageFrom); // Iniciar reconocimiento de voz
   };
 
-  const handleMicPressSecondHalf = () => {
-    setTextSecondHalf('Escuchando usuario...');
+  const handleMicPressOutFirstHalf = () => {
+    console.log('Micrófono Primera Mitad liberado');
+    stopRecognizing(); // Detener reconocimiento de voz
+  };
+
+  const handleMicPressInSecondHalf = () => {
+    console.log('Micrófono Segunda Mitad presionado');
+    console.log('languageTo:', languageTo); // Imprime el valor seleccionado en languageFrom
+    startRecognizing(languageTo); // Iniciar reconocimiento de voz
+  };
+
+  const handleMicPressOutSecondHalf = () => {
+    console.log('Micrófono Segunda Mitad liberado');
+    stopRecognizing(); // Detener reconocimiento de voz
   };
 
   const handleLanguageFromChange = (value) => {
@@ -52,23 +72,100 @@ const Interpreter_3 = () => {
 
   const handleSoundButtonPressFirstHalf = () => {
     console.log('Botón presionado:', 'Sonido Primera Mitad');
-    // Aquí podrías agregar la lógica adicional que necesites
+    handleSpeakResults(languageTo, languageFromResult);
   };
 
-  const handleEnterButtonPressFirstHalf = () => {
+  const handleEnterButtonPressFirstHalf = async () => {
     console.log('Botón presionado:', 'Enter Primera Mitad');
-    // Aquí podrías agregar la lógica adicional que necesites
+    const requestBody = {
+      originalMessage: textFirstHalf,
+      originalLanguage: languageFrom,
+      destinationLanguage: languageTo,
+    };
+
+    console.log('Solicitud enviada al servidor:', JSON.stringify(requestBody));
+
+    try {
+      const response = await fetch(`http://${Globals.ENDPOINT_IP}:3000/interpret`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to interpret text');
+      }
+
+      const data = await response.json();
+      console.log('Respuesta del servidor:\n', data); // Imprime los datos recibidos
+      setTextFirstHalf(Object.values(data)[0]);
+      setLanguageFromResult(Object.values(data)[1]);
+    } catch (error) {
+      console.error('Error al interpretar texto:', error);
+    }
   };
 
   const handleSoundButtonPressSecondHalf = () => {
     console.log('Botón presionado:', 'Sonido Segunda Mitad');
+    handleSpeakResults(languageFrom, languageToResult);
     // Aquí podrías agregar la lógica adicional que necesites
   };
 
-  const handleEnterButtonPressSecondHalf = () => {
-    console.log('Botón presionado:', 'Enter Segunda Mitad');
-    // Aquí podrías agregar la lógica adicional que necesites
+  const handleEnterButtonPressSecondHalf = async () => {
+    console.log('Botón presionado:', 'Enter Primera Mitad');
+    const requestBody = {
+      originalMessage: textSecondHalf,
+      originalLanguage: languageTo.toUpperCase(),
+      destinationLanguage: languageFrom.toUpperCase(),
+    };
+
+    console.log('Solicitud enviada al servidor:', JSON.stringify(requestBody));
+
+    try {
+      const response = await fetch(`http://${Globals.ENDPOINT_IP}:3000/interpret`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to interpret text');
+      }
+
+      const data = await response.json();
+      console.log('Respuesta del servidor:\n', data); // Imprime los datos recibidos
+      setTextSecondHalf(Object.values(data)[0]);
+      setLanguageToResult(Object.values(data)[1]);
+    } catch (error) {
+      console.error('Error al interpretar texto:', error);
+    }
   };
+
+  const handleSpeakResults = (language, textToSpeak) => {
+    if (textToSpeak.trim().length > 0) {
+      Tts.setDefaultLanguage(language); // Establecer el idioma deseado
+      Tts.setDefaultRate(0.5); // Velocidad de habla al 50%
+      Tts.speak(textToSpeak);
+    }
+  };
+
+  // Actualizar resultados de reconocimiento en los estados correspondientes
+  useEffect(() => {
+    if (state.results.length > 0) {
+      console.log('state.results actualizado:', state.results[0]);
+      console.log('activeHalf:', activeHalf); // Imprimir el valor de activeHalf
+      if (activeHalf === 'first') {
+        setTextFirstHalf(state.results[0]);
+      } else if (activeHalf === 'second') {
+        setTextSecondHalf(state.results[0]);
+      }
+    }
+  }, [state.results, activeHalf]);
+
   return (
     <View style={styles.container}>
       {/* Primera mitad */}
@@ -82,14 +179,22 @@ const Interpreter_3 = () => {
           <Ionicons name="enter" size={24} color="white" />
         </TouchableOpacity>
         {/* Botón de micrófono */}
-        <TouchableOpacity style={styles.micButtonFirstHalf} onPress={handleMicPressFirstHalf}>
+        <TouchableOpacity
+          style={styles.micButtonFirstHalf}
+          onPressIn={() => {
+            handleMicPressInFirstHalf();
+          }}
+          onPressOut={() => {
+            setActiveHalf("first");
+            handleMicPressOutFirstHalf();
+          }}>
           <Ionicons name="mic" size={32} color="white" />
         </TouchableOpacity>
         <TextInput
           style={[styles.input, styles.textInputFirstHalf]}
           placeholder={`${languages.find(lang => lang.abbreviation === languageFrom)?.name} (${languageFrom})`}
           onChangeText={setTextFirstHalf}
-          value={textFirstHalf}
+          value={textFirstHalf}  // Mostrar el texto reconocido si está disponible
           multiline={true}
           numberOfLines={4}
         />
@@ -133,14 +238,22 @@ const Interpreter_3 = () => {
           <Ionicons name="enter" size={24} color="white" />
         </TouchableOpacity>
         {/* Botón de micrófono */}
-        <TouchableOpacity style={styles.micButtonSecondHalf} onPress={handleMicPressSecondHalf}>
+        <TouchableOpacity
+          style={styles.micButtonSecondHalf}
+          onPressIn={() => {
+            handleMicPressInSecondHalf();
+          }}
+          onPressOut={() => {
+            setActiveHalf('second'); // Establecer la segunda mitad como activa
+            handleMicPressOutSecondHalf();
+          }}>
           <Ionicons name="mic" size={32} color="white" />
         </TouchableOpacity>
         <TextInput
           style={[styles.input, styles.textInputSecondHalf]}
           placeholder={`${languages.find(lang => lang.abbreviation === languageTo)?.name} (${languageTo})`}
           onChangeText={setTextSecondHalf}
-          value={textSecondHalf}
+          value={textSecondHalf}  // Mostrar el texto reconocido si está disponible
           multiline={true}
           numberOfLines={4}
         />
@@ -260,4 +373,5 @@ const styles = StyleSheet.create({
     left: 10,
   },
 });
+
 export default Interpreter_3;
