@@ -13,7 +13,9 @@ const Interpreter_3 = () => {
   const [textFirstHalf, setTextFirstHalf] = useState('');
   const [textSecondHalf, setTextSecondHalf] = useState('');
   const [languageFrom, setLanguageFrom] = useState('es-MX');
+  const [languageFromResult, setLanguageFromResult] = useState('en-US');
   const [languageTo, setLanguageTo] = useState('en-US');
+  const [languageToResult, setLanguageToResult] = useState('es-MX');
   const [languages, setLanguages] = useState([]);
   const { state: state, startRecognizing: startRecognizing, stopRecognizing: stopRecognizing } = useVoiceRecognition();
   const [activeHalf, setActiveHalf] = useState(null);
@@ -70,23 +72,77 @@ const Interpreter_3 = () => {
 
   const handleSoundButtonPressFirstHalf = () => {
     console.log('Botón presionado:', 'Sonido Primera Mitad');
-    handleSpeakResults(languageFrom, textFirstHalf);
-    // Aquí podrías agregar la lógica adicional que necesites
+    handleSpeakResults(languageTo, languageFromResult);
   };
 
-  const handleEnterButtonPressFirstHalf = () => {
+  const handleEnterButtonPressFirstHalf = async () => {
     console.log('Botón presionado:', 'Enter Primera Mitad');
-    // Aquí podrías agregar la lógica adicional que necesites
+    const requestBody = {
+      originalMessage: textFirstHalf,
+      originalLanguage: languageFrom,
+      destinationLanguage: languageTo,
+    };
+
+    console.log('Solicitud enviada al servidor:', JSON.stringify(requestBody));
+
+    try {
+      const response = await fetch(`http://${Globals.ENDPOINT_IP}:3000/interpret`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to interpret text');
+      }
+
+      const data = await response.json();
+      console.log('Respuesta del servidor:\n', data); // Imprime los datos recibidos
+      setTextFirstHalf(Object.values(data)[0]);
+      setLanguageFromResult(Object.values(data)[1]);
+    } catch (error) {
+      console.error('Error al interpretar texto:', error);
+    }
   };
 
   const handleSoundButtonPressSecondHalf = () => {
     console.log('Botón presionado:', 'Sonido Segunda Mitad');
-    handleSpeakResults(languageTo, textSecondHalf);
+    handleSpeakResults(languageFrom, languageToResult);
     // Aquí podrías agregar la lógica adicional que necesites
   };
 
-  const handleEnterButtonPressSecondHalf = () => {
-    console.log('Botón presionado:', 'Enter Segunda Mitad');
+  const handleEnterButtonPressSecondHalf = async () => {
+    console.log('Botón presionado:', 'Enter Primera Mitad');
+    const requestBody = {
+      originalMessage: textSecondHalf,
+      originalLanguage: languageTo.toUpperCase(),
+      destinationLanguage: languageFrom.toUpperCase(),
+    };
+
+    console.log('Solicitud enviada al servidor:', JSON.stringify(requestBody));
+
+    try {
+      const response = await fetch(`http://${Globals.ENDPOINT_IP}:3000/interpret`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to interpret text');
+      }
+
+      const data = await response.json();
+      console.log('Respuesta del servidor:\n', data); // Imprime los datos recibidos
+      setTextSecondHalf(Object.values(data)[0]);
+      setLanguageToResult(Object.values(data)[1]);
+    } catch (error) {
+      console.error('Error al interpretar texto:', error);
+    }
   };
 
   const handleSpeakResults = (language, textToSpeak) => {
@@ -95,7 +151,7 @@ const Interpreter_3 = () => {
       Tts.setDefaultRate(0.5); // Velocidad de habla al 50%
       Tts.speak(textToSpeak);
     }
-  };  
+  };
 
   // Actualizar resultados de reconocimiento en los estados correspondientes
   useEffect(() => {
