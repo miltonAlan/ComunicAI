@@ -3,6 +3,7 @@ import { StyleSheet, View, Dimensions, TextInput, TouchableOpacity } from 'react
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import Globals from '../utils/globals';
+import { useVoiceRecognition } from '../hooks/useVoiceRecognition';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -13,6 +14,8 @@ const Interpreter_3 = () => {
   const [languageFrom, setLanguageFrom] = useState('');
   const [languageTo, setLanguageTo] = useState('');
   const [languages, setLanguages] = useState([]);
+  const { state: state, startRecognizing: startRecognizing, stopRecognizing: stopRecognizing } = useVoiceRecognition();
+  const [activeHalf, setActiveHalf] = useState(null);
 
   useEffect(() => {
     fetchLanguages(); // Llamar a la función para cargar los idiomas
@@ -34,12 +37,24 @@ const Interpreter_3 = () => {
     }
   };
 
-  const handleMicPressFirstHalf = () => {
-    setTextFirstHalf('Escuchando usuario...');
+  const handleMicPressInFirstHalf = () => {
+    console.log('Micrófono Primera Mitad presionado');
+    startRecognizing(); // Iniciar reconocimiento de voz
   };
 
-  const handleMicPressSecondHalf = () => {
-    setTextSecondHalf('Escuchando usuario...');
+  const handleMicPressOutFirstHalf = () => {
+    console.log('Micrófono Primera Mitad liberado');
+    stopRecognizing(); // Detener reconocimiento de voz
+  };
+
+  const handleMicPressInSecondHalf = () => {
+    console.log('Micrófono Segunda Mitad presionado');
+    startRecognizing(); // Iniciar reconocimiento de voz
+  };
+
+  const handleMicPressOutSecondHalf = () => {
+    console.log('Micrófono Segunda Mitad liberado');
+    stopRecognizing(); // Detener reconocimiento de voz
   };
 
   const handleLanguageFromChange = (value) => {
@@ -67,8 +82,21 @@ const Interpreter_3 = () => {
 
   const handleEnterButtonPressSecondHalf = () => {
     console.log('Botón presionado:', 'Enter Segunda Mitad');
-    // Aquí podrías agregar la lógica adicional que necesites
   };
+
+  // Actualizar resultados de reconocimiento en los estados correspondientes
+  useEffect(() => {
+    if (state.results.length > 0) {
+      console.log('state.results actualizado:', state.results[0]);
+      console.log('activeHalf:', activeHalf); // Imprimir el valor de activeHalf
+      if (activeHalf === 'first') {
+        setTextFirstHalf(state.results[0]);
+      } else if (activeHalf === 'second') {
+        setTextSecondHalf(state.results[0]);
+      }
+    }
+  }, [state.results, activeHalf]);
+
   return (
     <View style={styles.container}>
       {/* Primera mitad */}
@@ -82,14 +110,22 @@ const Interpreter_3 = () => {
           <Ionicons name="enter" size={24} color="white" />
         </TouchableOpacity>
         {/* Botón de micrófono */}
-        <TouchableOpacity style={styles.micButtonFirstHalf} onPress={handleMicPressFirstHalf}>
+        <TouchableOpacity
+          style={styles.micButtonFirstHalf}
+          onPressIn={() => {
+            handleMicPressInFirstHalf();
+          }}
+          onPressOut={() => {
+            setActiveHalf("first");
+            handleMicPressOutFirstHalf();
+          }}>
           <Ionicons name="mic" size={32} color="white" />
         </TouchableOpacity>
         <TextInput
           style={[styles.input, styles.textInputFirstHalf]}
           placeholder={`${languages.find(lang => lang.abbreviation === languageFrom)?.name} (${languageFrom})`}
           onChangeText={setTextFirstHalf}
-          value={textFirstHalf}
+          value={textFirstHalf}  // Mostrar el texto reconocido si está disponible
           multiline={true}
           numberOfLines={4}
         />
@@ -133,14 +169,22 @@ const Interpreter_3 = () => {
           <Ionicons name="enter" size={24} color="white" />
         </TouchableOpacity>
         {/* Botón de micrófono */}
-        <TouchableOpacity style={styles.micButtonSecondHalf} onPress={handleMicPressSecondHalf}>
+        <TouchableOpacity
+          style={styles.micButtonSecondHalf}
+          onPressIn={() => {
+            handleMicPressInSecondHalf();
+          }}
+          onPressOut={() => {
+            setActiveHalf('second'); // Establecer la segunda mitad como activa
+            handleMicPressOutSecondHalf();
+          }}>
           <Ionicons name="mic" size={32} color="white" />
         </TouchableOpacity>
         <TextInput
           style={[styles.input, styles.textInputSecondHalf]}
           placeholder={`${languages.find(lang => lang.abbreviation === languageTo)?.name} (${languageTo})`}
           onChangeText={setTextSecondHalf}
-          value={textSecondHalf}
+          value={textSecondHalf}  // Mostrar el texto reconocido si está disponible
           multiline={true}
           numberOfLines={4}
         />
@@ -260,4 +304,5 @@ const styles = StyleSheet.create({
     left: 10,
   },
 });
+
 export default Interpreter_3;
