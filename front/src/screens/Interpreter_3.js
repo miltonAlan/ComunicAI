@@ -11,8 +11,8 @@ const windowHeight = Dimensions.get('window').height;
 const Interpreter_3 = () => {
   const [textFirstHalf, setTextFirstHalf] = useState('');
   const [textSecondHalf, setTextSecondHalf] = useState('');
-  const [languageFrom, setLanguageFrom] = useState('');
-  const [languageTo, setLanguageTo] = useState('');
+  const [languageFrom, setLanguageFrom] = useState('es-MX');
+  const [languageTo, setLanguageTo] = useState('en-US');
   const [languages, setLanguages] = useState([]);
   const { state: state, startRecognizing: startRecognizing, stopRecognizing: stopRecognizing } = useVoiceRecognition();
   const [activeHalf, setActiveHalf] = useState(null);
@@ -39,7 +39,8 @@ const Interpreter_3 = () => {
 
   const handleMicPressInFirstHalf = () => {
     console.log('Micrófono Primera Mitad presionado');
-    startRecognizing(); // Iniciar reconocimiento de voz
+    console.log('languageFrom:', languageFrom); // Imprime el valor seleccionado en languageFrom
+    startRecognizing(languageFrom); // Iniciar reconocimiento de voz
   };
 
   const handleMicPressOutFirstHalf = () => {
@@ -49,7 +50,8 @@ const Interpreter_3 = () => {
 
   const handleMicPressInSecondHalf = () => {
     console.log('Micrófono Segunda Mitad presionado');
-    startRecognizing(); // Iniciar reconocimiento de voz
+    console.log('languageTo:', languageTo); // Imprime el valor seleccionado en languageFrom
+    startRecognizing(languageTo); // Iniciar reconocimiento de voz
   };
 
   const handleMicPressOutSecondHalf = () => {
