@@ -183,4 +183,4 @@ const styles = StyleSheet.create({
     bottom: '8%', // Posición abajo para la segunda mitad
   },
 });
-export default Interpreter;
+export default Interpreter_3;
