@@ -2,7 +2,7 @@ Requerimientos:
 - Crear cuenta en GitHub
     - Usuarios:
         - codingWhileAlive
-        - 
+        - manuelalejandroln13
         -
     Software:
         - VS Code (ultima version)
