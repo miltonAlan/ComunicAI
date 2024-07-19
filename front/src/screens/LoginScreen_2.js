@@ -63,7 +63,7 @@ const LoginScreen_2 = () => {
     return (
         <View style={styles.root}>
             <Image
-                source={Logo}
+                source={require("../assets/images/logo.png")}
                 style={[styles.logo, { height: height * 0.3 }]}
                 resizeMode='contain'
             />
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         padding: 20,
-        backgroundColor: '#e8e8e8',
+        backgroundColor: 'white',
     },
     logo: {
         width: '70%',
