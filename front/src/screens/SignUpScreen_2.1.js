@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Image, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import CustomInput from '../components/CustomInput';
 import Button from '../components/Button';
@@ -53,6 +53,11 @@ const SignUpScreen = () => {
 
     return (
         <View style={styles.root}>
+            <Image
+                source={require("../assets/images/icono.jpg")}
+                size={32}
+                style={styles.icon}
+            ></Image>
             <View style={styles.customInputContainer}>
                 <CustomInput
                     placeholder="Username"
@@ -99,9 +104,10 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         padding: 20,
-        backgroundColor: '#e8e8e8',
+        backgroundColor: "#FEFEFFFF",
     },
     customInputContainer: {
+        marginTop: '5%',
         width: '100%',
         padding: 10,
         borderRadius: 5,
@@ -114,6 +120,10 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         paddingHorizontal: 10,
         marginBottom: 10,
+    },
+    icon: {
+        width: '50%',
+        height: '30%'
     },
 });
 
