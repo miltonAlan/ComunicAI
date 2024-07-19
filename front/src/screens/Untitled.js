@@ -8,22 +8,25 @@ import MaterialButtonShare1 from "../components/MaterialButtonShare1";
 import { useVoiceRecognition } from "../hooks/useVoiceRecognition";
 import Tts from 'react-native-tts';
 import Globals from "../utils/globals";
+import RNPickerSelect from 'react-native-picker-select';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
+import Languajes from '../components/Idiomas';
 
 
 function Untitled({ route }){
 
   const [languages, setLanguages] = useState([]);
+  const [selectedLanguage, setSelectedLanguage] = useState("en-US");
   const [imput, setImput] = useState('')
   const [result, setResult] = useState('')
   const [message, setMessage] = useState('');
   const { state, startRecognizing, stopRecognizing, destroyRecognizer } =
   useVoiceRecognition();
   console.log('useVoiceRecognition return value:', { state, startRecognizing, stopRecognizing, destroyRecognizer });
-
   const { myString } = route.params;
-  console.log(myString);
+  console.log(myString,' a ');
+  console.log(selectedLanguage);
+  
   useEffect(() => {
     fetchIdiomas();
   }, []);
@@ -53,6 +56,19 @@ function Untitled({ route }){
     console.log(`Abreviatura: ${language.abbreviation}, URL de la bandera: ${language.flagUrl}`);
   } else {
     console.log("Idioma no encontrado");
+  }
+
+  const findLanguajeInf = (text) => {
+    const languageNamedos = text;
+    const languagedos = findLanguageByName(languages, languageNamedos);
+  
+    if (languagedos) {
+      console.log(`Abreviatura: ${languagedos.abbreviation}`);
+      const siglas = languagedos.abbreviation;
+      return siglas;
+    } else {
+      console.log("Idioma no encontrado");
+    }
   }
   
 
@@ -86,13 +102,13 @@ function Untitled({ route }){
   };
 
   const talkSup = () => {
-    const jsonString = JSON.stringify(state.partialResults);
+    const jsonString = JSON.stringify(state.results[0]);
     const text = jsonString.replace(/[\[\]{}"]/g, '');
     setResult(text);
   }
 
   const talkInf = () => {
-    const jsonString = JSON.stringify(state.partialResults);
+    const jsonString = JSON.stringify(state.results[0]);
     const text = jsonString.replace(/[\[\]{}"]/g, '');
     setImput(text);
   }
@@ -144,7 +160,7 @@ function Untitled({ route }){
           <MaterialButtonShare1
             style={styles.materialButtonShare1}
             onPressIn={() => {
-              startRecognizing(language.abbreviation);
+              startRecognizing(selectedLanguage);
             }}
             onPressOut={() => {
               stopRecognizing();
@@ -188,7 +204,25 @@ function Untitled({ route }){
           ></Image>
         </TouchableOpacity>
         <Text style={styles.text1}>{myString}</Text>
-        <Text style={styles.espanol}>Español</Text>
+        <View style={styles.pickerContainer}>
+          <RNPickerSelect
+              onValueChange={(value) => setSelectedLanguage(value)}
+              items={Languajes}
+              placeholder={{ label : 'Selecciona un idioma', value: null }}
+              value={selectedLanguage} // Establece el valor del picker
+              useNativeAndroidPickerStyle={false} // Estilos personalizados
+              style={{
+                inputAndroid: {
+                  fontFamily: "ABeeZee",
+                  color: "#121212",
+                  fontSize: 20
+                },
+                placeholder: {
+                  
+                },
+              }}
+            />
+        </View>
         <StatusBar style="auto" />
       </View>
     
@@ -198,7 +232,16 @@ function Untitled({ route }){
 const styles = StyleSheet.create({
   
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "#FEFEFFFF",
+  },
+  pickerContainer: {
+    top: 405,
+    left: 217,
+    position: "absolute",
+    //width: width * 0.3, // Ajusta el ancho del picker al 40% del ancho de la pantalla
+    //alignSelf: 'flex-end',
+    //marginLeft: width * 0.9,
   },
   rect: {
     top: 25,
@@ -206,7 +249,7 @@ const styles = StyleSheet.create({
     width: 360,
     height: 352,
     position: "absolute",
-    backgroundColor: "rgba(74,144,226,1)"
+    backgroundColor: "#535CE8FF"
   },
   icon5: {
     color: "rgba(0,0,0,1)",
@@ -247,7 +290,8 @@ const styles = StyleSheet.create({
     height: 196,
     marginTop: 11,
     marginLeft: 37,
-    backgroundColor:"rgba(41,118,206,1)"
+    backgroundColor:"#535CE8FF",
+    color:"#FEFEFFFF"
   },
   image1: {
     width: 51,
@@ -292,7 +336,7 @@ const styles = StyleSheet.create({
     width: 286,
     height: 181,
     fontSize: 18,
-    backgroundColor: "rgba(230,226,238,1)"
+    backgroundColor: "#FEFEFFFF"
   },
   icon2Stack: {
     top: 0,
@@ -347,6 +391,28 @@ const styles = StyleSheet.create({
     color: "#121212",
     fontSize: 20
   }
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 20,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    color: 'black',
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  inputAndroid: {
+    fontFamily: "ABeeZee",
+    color: "#121212",
+    fontSize: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    color: 'black',
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
 });
 
 export default Untitled;

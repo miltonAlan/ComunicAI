@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Dimensions, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, View, Dimensions, TextInput, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import Globals from '../utils/globals';
@@ -172,7 +172,7 @@ const Interpreter_3 = () => {
       <View style={[styles.halfContainer, styles.firstHalf]}>
         {/* Botón de sonido */}
         <TouchableOpacity style={styles.soundButtonFirstHalf} onPress={handleSoundButtonPressFirstHalf}>
-          <Ionicons name="volume-high-outline" size={24} color="white" />
+          <Ionicons name="volume-high-outline" size={24} color="black" />
         </TouchableOpacity>
         {/* Botón de cerebro */}
         <TouchableOpacity style={styles.brainButtonFirstHalf} onPress={handleEnterButtonPressFirstHalf}>
@@ -188,15 +188,16 @@ const Interpreter_3 = () => {
             setActiveHalf("first");
             handleMicPressOutFirstHalf();
           }}>
-          <Ionicons name="mic" size={32} color="white" />
+          <Ionicons name="mic" size={32} color="black" />
         </TouchableOpacity>
         <TextInput
-          style={[styles.input, styles.textInputFirstHalf]}
+          style={[styles.inputuno, styles.textInputFirstHalf]}
           placeholder={`${languages.find(lang => lang.abbreviation === languageFrom)?.name} (${languageFrom})`}
           onChangeText={setTextFirstHalf}
           value={textFirstHalf}  // Mostrar el texto reconocido si está disponible
           multiline={true}
           numberOfLines={4}
+          placeholderTextColor="white" 
         />
       </View>
 
@@ -214,7 +215,11 @@ const Interpreter_3 = () => {
             ))}
           </Picker>
 
-          <Ionicons name="logo-facebook" size={32} color="black" style={styles.icon} />
+          <Image
+            source={require("../assets/images/icono.jpg")}
+            size={32}
+            style={styles.icon}
+          ></Image>
 
           <Picker
             selectedValue={languageTo}
@@ -231,7 +236,7 @@ const Interpreter_3 = () => {
       <View style={[styles.halfContainer, styles.secondHalf]}>
         {/* Botón de sonido */}
         <TouchableOpacity style={styles.soundButtonSecondHalf} onPress={handleSoundButtonPressSecondHalf}>
-          <Ionicons name="volume-high-outline" size={24} color="white" />
+          <Ionicons name="volume-high-outline" size={24} color="black" />
         </TouchableOpacity>
         {/* Botón de cerebro */}
         <TouchableOpacity style={styles.brainButtonSecondHalf} onPress={handleEnterButtonPressSecondHalf}>
@@ -250,7 +255,7 @@ const Interpreter_3 = () => {
           <Ionicons name="mic" size={32} color="white" />
         </TouchableOpacity>
         <TextInput
-          style={[styles.input, styles.textInputSecondHalf]}
+          style={[styles.inputdos, styles.textInputSecondHalf]}
           placeholder={`${languages.find(lang => lang.abbreviation === languageTo)?.name} (${languageTo})`}
           onChangeText={setTextSecondHalf}
           value={textSecondHalf}  // Mostrar el texto reconocido si está disponible
@@ -275,22 +280,32 @@ const styles = StyleSheet.create({
     position: 'relative', // Para posicionar el botón sobre el cuadro de texto
   },
   firstHalf: {
-    backgroundColor: '#FFD700', // Color dorado
+    backgroundColor: "#535CE8FF", // Color azulado superior
   },
   secondHalf: {
-    backgroundColor: '#8A2BE2', // Color violeta
+    backgroundColor: "#FEFEFFFF", // Color blanco inferior
   },
   middleContainer: {
     height: windowHeight / 10,
-    backgroundColor: '#ADD8E6', // Color azul claro
+    backgroundColor: "#FEFEFFFF", 
   },
-  input: {
+  inputuno: {
+    width: '90%',
+    height: '55%',
+    borderColor: 'white',
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    color: "#FEFEFFFF",
+  },
+  inputdos: {
     width: '90%',
     height: '55%',
     borderColor: 'gray',
     borderWidth: 1,
     paddingHorizontal: 10,
     marginBottom: 10,
+    color: "#000000"
   },
   textInputFirstHalf: {
     marginTop: '1%', // Espacio en la parte superior
@@ -313,28 +328,30 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginHorizontal: 10,
+    width: '20%',
+    height: '100%'
   },
   micButtonFirstHalf: {
     position: 'absolute',
-    backgroundColor: 'blue', // Color azul para la primera mitad
+    backgroundColor: "#FEFEFFFF", // Color azul para la primera mitad
     borderRadius: 50,
     padding: 3,
     alignItems: 'center',
     justifyContent: 'center',
-    top: '1%', // Posición arriba para la primera mitad
+    top: '4%', // Posición arriba para la primera mitad
   },
   micButtonSecondHalf: {
     position: 'absolute',
-    backgroundColor: 'red', // Color rojo para la segunda mitad (ejemplo)
+    backgroundColor: "#535CE8FF", // Color rojo para la segunda mitad (ejemplo)
     borderRadius: 50,
     padding: 3,
     alignItems: 'center',
     justifyContent: 'center',
-    bottom: '1%', // Posición abajo para la segunda mitad
+    bottom: '4%', // Posición abajo para la segunda mitad
   },
   soundButtonFirstHalf: {
     position: 'absolute',
-    backgroundColor: '#4CAF50', // Color verde para el botón de sonido en la primera mitad
+    backgroundColor: "#FFD700", // Color verde para el botón de sonido en la primera mitad
     borderRadius: 25,
     padding: 3,
     alignItems: 'center',
@@ -350,7 +367,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     bottom: 10, // Posición en la esquina inferior izquierda
-    left: 10,
+    left: 15,
   },
   brainButtonSecondHalf: {
     position: 'absolute',
@@ -364,14 +381,15 @@ const styles = StyleSheet.create({
   },
   soundButtonSecondHalf: {
     position: 'absolute',
-    backgroundColor: '#4CAF50', // Color verde para el botón de sonido en la segunda mitad
+    backgroundColor: "#FFD700", // Color verde para el botón de sonido en la segunda mitad
     borderRadius: 10,
     padding: 3,
     alignItems: 'center',
     justifyContent: 'center',
     top: 10, // Posición en la esquina superior izquierda
-    left: 10,
+    left: 15,
   },
+  
 });
 
 export default Interpreter_3;
