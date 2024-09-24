@@ -19,6 +19,14 @@ El monorepositorio está organizado en dos módulos principales:
 - **Frontend**: La interfaz de usuario desarrollada con React Native permite a los usuarios interactuar fácilmente con la aplicación.
 - **Backend**: Gestiona la lógica de negocio, el acceso a la base de datos, la autenticación y la comunicación con el modelo de IA.
 
+## Requisitos
+
+Para poder clonar y ejecutar este repositorio localmente, asegúrate de cumplir con los siguientes requisitos:
+
+- **Node.js v18.x o superior**: Necesario para ejecutar el frontend en React Native y gestionar dependencias.
+- **npm v9.x** o **Yarn v1.x**: Para la gestión de paquetes del proyecto.
+- **Android SDK**: Requerido si planeas ejecutar la aplicación en un dispositivo Android o emulador.
+
 ## Instalación y Configuración Local
 
 1. Clona el repositorio e instala las dependencias: 
