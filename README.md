@@ -19,6 +19,15 @@ El monorepositorio está organizado en dos módulos principales:
 - **Frontend**: La interfaz de usuario desarrollada con React Native permite a los usuarios interactuar fácilmente con la aplicación.
 - **Backend**: Gestiona la lógica de negocio, el acceso a la base de datos, la autenticación y la comunicación con el modelo de IA.
 
+## Vista previa
+![Vista previa](https://raw.githubusercontent.com/miltonAlan/ComunicAI/master/capture1.png "Vista previa 1")
+![Vista previa](https://raw.githubusercontent.com/miltonAlan/ComunicAI/master/capture2.png "Vista previa 2")
+![Vista previa](https://raw.githubusercontent.com/miltonAlan/ComunicAI/master/capture3.png "Vista previa 3")
+![Vista previa](https://raw.githubusercontent.com/miltonAlan/ComunicAI/master/capture4.png "Vista previa 4")
+![Vista previa](https://raw.githubusercontent.com/miltonAlan/ComunicAI/master/capture5.png "Vista previa 5")
+![Vista previa](https://raw.githubusercontent.com/miltonAlan/ComunicAI/master/capture6.png "Vista previa 6")
+![Vista previa](https://raw.githubusercontent.com/miltonAlan/ComunicAI/master/capture7.png "Vista previa 7")
+
 ## Requisitos
 
 Para poder clonar y ejecutar este repositorio localmente, asegúrate de cumplir con los siguientes requisitos:
