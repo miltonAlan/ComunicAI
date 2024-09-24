@@ -21,7 +21,7 @@ El monorepositorio está organizado en dos módulos principales:
 
 ## Instalación y Configuración Local
 
-1. Clona el repositorio: 
+1. Clona el repositorio e instala las dependencias: 
    ```bash
    git clone https://github.com/miltonAlan/Translation-App-AI.git
    cd frontend
